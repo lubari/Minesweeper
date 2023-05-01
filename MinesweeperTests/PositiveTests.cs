@@ -75,7 +75,7 @@ namespace MinesweeperTests
         }
 
         [Test]
-        public void GetCurrentFieldTest()
+        public void WhenOpenMine_GetCurrentFieldTest()
         {
             //Arrange
             bool[,] boolField =
@@ -98,6 +98,34 @@ namespace MinesweeperTests
             Assert.AreEqual(PointState.Close, currentField[2, 0]);
             Assert.AreEqual(PointState.Close, currentField[2, 1]);
             Assert.AreEqual(PointState.Close, currentField[2, 2]);
+        }
+
+        [Test]
+        public void WhenOpenNotMines_GetCurrentFieldTest()
+        {
+            //Arrange
+            bool[,] boolField =
+            {
+            {false, false, false},
+            {false, true, false},
+            {true, false, false}
+            };
+            var gameProcessor = new GameProcessor(boolField);
+            //Act
+            gameProcessor.Open(0, 0);
+            gameProcessor.Open(1, 0);
+            gameProcessor.Open(2, 2);
+            PointState[,] currentField = gameProcessor.GetCurrentField();
+            // Assert
+            Assert.AreEqual(PointState.Neighbors1, currentField[0, 0]);
+            Assert.AreEqual(PointState.Close, currentField[0, 1]);
+            Assert.AreEqual(PointState.Close, currentField[0, 2]);
+            Assert.AreEqual(PointState.Neighbors2, currentField[1, 0]);
+            Assert.AreEqual(PointState.Close, currentField[1, 1]);
+            Assert.AreEqual(PointState.Close, currentField[1, 2]);
+            Assert.AreEqual(PointState.Close, currentField[2, 0]);
+            Assert.AreEqual(PointState.Close, currentField[2, 1]);
+            Assert.AreEqual(PointState.Neighbors1, currentField[2, 2]);
         }
 
     }
